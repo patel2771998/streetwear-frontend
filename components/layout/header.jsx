@@ -112,6 +112,11 @@ export default function Header() {
   const { updateCartViewDisplay } = useContext(DisplayContext)
   const { cart } = useContext(StoreContext)
   const [isCheckout, setIsCheckout] = useState(true)
+  const [isRender, setRender] = useState(false)
+
+  useEffect(() => {
+    setRender(true)
+  }, [classes])
 
   const displayDesktop = () => {
     return (
@@ -164,8 +169,10 @@ export default function Header() {
 
 
   return (
-    <AppBar className={classes.appbar}>
-      {displayDesktop()}
-    </AppBar>
+    <>
+      {isRender ? <AppBar className={classes.appbar}>
+        {displayDesktop()}
+      </AppBar> : <></>}
+    </>
   );
 }
