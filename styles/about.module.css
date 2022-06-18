@@ -1,0 +1,59 @@
+.cardtitle{
+    color: #fff;
+}
+.sectionTitle{
+    font-size: 3rem;
+    text-align: center;
+    color: #fff;
+
+}
+.sectionBlue{
+    background: #cde3f8;
+    padding: '60px 0'; 
+}
+.cardCol{
+}
+.cardCol .card{
+    padding: 20px 20px 40px;
+}
+.handpicked{
+    display: flex;
+    background-color: #000;
+}
+.darkbg{
+    background-color: #242020;
+}
+.overlay{
+    position: relative;
+}
+.overlay:before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0, 0.5);
+    top: 00;
+    z-index: 1;
+}
+.cardClass{
+    padding: 0 20px 40px;
+    background: transparent;
+    border: 1px solid;
+    border-radius: 0 50% 50% 0;
+    margin: 0 30px 30px;
+}
+.cardColClass{
+    border-radius: 50%;
+}
+.cardbody, .cardbody .card-title{
+    color: #fff;
+}
+.cardbody .card-text{
+    color: #ffffffbd;
+}
+.fullpageBanner{
+    background-image: url('/about/girl-boy.jpg');
+}
+.darktheme h1, .darktheme h2, .darktheme h3, .darktheme h4,.darktheme h5,.darktheme h6, .darktheme p{
+    color: #fff;
+} 

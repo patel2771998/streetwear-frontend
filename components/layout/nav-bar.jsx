@@ -28,8 +28,9 @@ export const NavBar = () => {
 
   return (
     
-    <div >
+    <div style={{position: 'relative',zIndex: '6'}}>
       <Header />
+      <div style={{height: '60px'}}></div>
       {/* <Link href="/">
         <a style={{ width: "125px" }}>
           <Image src={MedusaLogo} height="40px" width="100%" alt="logo" />

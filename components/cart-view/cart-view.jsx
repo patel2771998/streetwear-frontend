@@ -7,6 +7,9 @@ import { useRouter } from "next/router";
 import styles from "../../styles/cart-view.module.css";
 import { quantity, sum, formatPrice } from "../../utils/helper-functions";
 import { formatPrices } from "../../utils/prices";
+import { BsX } from "react-icons/bs";
+
+
 
 const CartView = () => {
   const { cartView, updateCartViewDisplay, updateCheckoutStep } =
@@ -115,13 +118,14 @@ const CartView = () => {
                       <p>{}</p>
                     </div>
                   </div>
-                  <button
+                  
+                </div>
+                <button
                     className={styles.remove}
                     onClick={() => removeLineItem(i.id)}
                   >
-                    Remove
+                    <BsX  size={24}/>
                   </button>
-                </div>
               </div>
             );
           })}

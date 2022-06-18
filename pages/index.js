@@ -3,159 +3,188 @@ import Link from "next/link";
 import { createClient } from "../utils/client";
 import { FaGithub } from "react-icons/fa";
 import { formatPrices } from "../utils/prices";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import StoreContext from "../context/store-context";
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, Button, Grid } from "@material-ui/core";
 import Slider from "../components/home/slider";
 import ClientSlider from "../components/home/clientSlider";
 import ImageContent from "../components/home/imageContent";
 import ContentImage from "../components/home/ContentImage";
+import BannerMiddle from "../components/home/bannerMiddle";
+import SaleBanner from "../components/home/SaleBanner";
+import Quickview from "../components/product/quickview";
+import HomeiconList from "../components/home/HomeiconList";
 
-export default function Home({ products }) {
+
+import Footer from "../components/layout/Footer.jsx";
+import productStyles from "../styles/product.module.css";
+import Image from "next/image"
+import { useRouter } from 'next/router';
+  import { BsSearch, BsEyeFill, BsHeart, BsEye } from "react-icons/bs";
+import Container from 'react-bootstrap/Container';
+
+
+
+// import ar from "../lang/ar.json";
+// import en from "../lang/en.json";
+// import fr from "../lang/fr.json";
+// import nl_NL from "../lang/nl-NL.json";
+
+export default function Home({ products, subtitle }) {
   const { cart } = useContext(StoreContext)
-  
+
+  function MouseOver(event) {
+    event.target.style.background = 'red';
+  }
+
+  var router = useRouter();
+  let locale = router.locale;
+
+  var sectionHandpicked = {
+    title: (locale === 'en-US' ? 'Title' : locale === 'fr' ? 'French title' : locale === 'nl-NL' ? "NL title" : "none"),
+    subtitle: (locale === 'en-US' ? 'Subtitle' : locale === 'fr' ? 'French Sunbtitle' : locale === 'nl-NL' ? "NL Subtitle" : "none"),
+
+  }
+
+  var subtitle = locale === 'en-US' ? 'Subtitle' : locale === 'fr' ? 'French Sunbtitle' : locale === 'nl-NL' ? "NL Subtitle" : "none";
+  const [productQuickView, setproductQuickView] = useState({});
+  const [show, setShow] = useState(0);
+  const [showhoverIcon, setshowhoverIcon] = useState(false);
+  const handleClose = (p) => setShow(false);
+  const handleShow = (p) => {
+    setShow(1);
+    setproductQuickView(p);
+
+  }
+
+  const handleMouseEnter = () => {
+    setshowhoverIcon(true);
+  };
+  const handleMouseLeave = () => {
+    setshowhoverIcon(false);
+  };
+
+
   return (
     <div >
       {/* <section className={styles.topBanner} style={{backgroundColor: 'red' }}>
           <Typography>test</Typography>
       </section> */}
-      <section className={styles.topBanner} style={{backgroundColor: 'white' }}>
-          <Slider />
+      <section className={styles.topBanner} style={{ backgroundColor: 'white' }}>
+        <Slider />
       </section>
-      <section className={styles.clientsSec}>
-          <ClientSlider />
-      </section>
-      <section className={styles.handpicked}>
-              <ImageContent />  
+      <section className={styles.clientsSec} style={{overflow: 'hidden'}} >
+        <ClientSlider />
+
       </section>
       <section className={styles.handpicked}>
-              <ContentImage />  
+        <ImageContent sectionContent={sectionHandpicked} />
       </section>
-      <main className={styles.main}>
-        <div className={styles.hero}>
-          <h1 className={styles.title}>
-            Medusa + Next.js Starter{" "}
-            <span role="img" aria-label="Rocket emoji">
-              🚀
-            </span>
-          </h1>
-          <p className={styles.description}>
-            Build blazing-fast client applications on top of a modular headless
-            commerce engine. Integrate seamlessly with any 3rd party tools for a
-            best-in-breed commerce stack.
-          </p>
-          <div className={styles.tags}>
-            <div className={styles.tag} style={{ background: "lightgrey" }}>
-              v{process.env.NEXT_PUBLIC_APP_VERSION}
-            </div>
-            <a
-              href="https://www.medusa-commerce.com/"
-              arget="_blank"
-              rel="noreferrer"
-              role="button"
-            >
-              <div
-                className={styles.tag}
-                style={{ background: "var(--logo-color-900)", color: "white" }}
-              >
-                Medusa
-              </div>
-            </a>
-            <a
-              href="https://nextjs.org/docs/getting-started"
-              target="_blank"
-              rel="noreferrer"
-              role="button"
-            >
-              <div
-                className={styles.tag}
-                style={{ background: "#111111", color: "white" }}
-              >
-                Next.js
-              </div>
-            </a>
-            <a
-              href="https://stripe.com/docs"
-              target="_blank"
-              rel="noreferrer"
-              role="button"
-            >
-              <div
-                className={styles.tag}
-                style={{ background: "#4379FF", color: "white" }}
-              >
-                Stripe
-              </div>
-            </a>
-          </div>
-          <div className={styles.links}>
-            <a
-              href="https://docs.medusa-commerce.com/"
-              target="_blank"
-              rel="noreferrer"
-              role="button"
-              className={styles.btn}
-            >
-              Read the docs
-              <svg
-                stroke="currentColor"
-                fill="currentColor"
-                strokeWidth="0"
-                viewBox="0 0 24 24"
-                height="1em"
-                width="1em"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
-              </svg>
-            </a>
-            <a
-              href="https://github.com/medusajs/nextjs-starter-medusa"
-              target="_blank"
-              rel="noreferrer"
-              role="button"
-              className={styles.btn}
-            >
-              View on GitHub
-              <FaGithub />
-            </a>
-          </div>
-        </div>
+      <section className={styles.handpicked}>
+        <ContentImage subtitle={subtitle} />
+      </section>
+      <section style={{overflow: 'hidden', borderBottom: '1px solid white'}}>
+        <Box mt={10}>
+          <SaleBanner />
+        </Box>
+      </section>
+      <Quickview show={show} handleClose={handleClose} product={productQuickView}/>
+      <section className={styles.container} style={{background: '#000'}}>
+
         <div className={styles.products}>
-          <h2>Demo Products</h2>
+        <Typography className={styles.productTitle} variant="h1" component="div" gutterBottom>Recent products</Typography>
           <div className={styles.grid}>
             {products &&
               products.map((p) => {
                 return (
-                  <div key={p.id} className={styles.card}>
+                  <div key={p.id} className={styles.card} 
+                      onMouseEnter={() => handleMouseEnter()}
+                      onMouseLeave={() => handleMouseLeave()}>
+                    
                     <Link
                       href={{ pathname: `/product/[id]`, query: { id: p.id } }}
-                      passHref
-                    >
-                      <a>
+                      passHref className={styles.productLink}>
+                      <a className={styles.productLink}>
                         <div>
-                          <h2>{p.title}</h2>
-                          <p>{formatPrices(cart, p.variants[0])}</p>
+                          <figure className={styles.image}>
+                            <div className={styles.placeholder}>
+                              <Image
+                                objectFit="cover"
+                                layout="fill"
+                                loading="eager"
+                                src={p.thumbnail}
+                                alt={`${p.title}`}
+                              />
+                            </div>
+                            
+                          </figure>
+                          <div className={styles.cardhover}>
+                            <h2>{p.title}</h2>
+                            <p>{formatPrices(cart, p.variants[0])}</p>
+                            
+                          </div>
                         </div>
                       </a>
                     </Link>
+
+                    <div className={styles.hoverIcon} show={showhoverIcon} >
+                              <span>
+                                <BsEye onClick={() => {
+                                    handleShow(p);
+                                }}/>
+                              </span>
+                              <span><BsHeart /></span>
+                              
+                          </div>
                   </div>
                 );
               })}
+
           </div>
+          <Grid container justifyContent="top" alignItems="center">
+            <Grid item xs={12}>
+              <Button href="#text-buttons" variant="outlined" color="primary" className={styles.button} style={{'display' : 'table', 'margin' : '0 auto'}}>Shop Now</Button>
+            </Grid>
+          </Grid>
         </div>
-      </main>
+      </section>
+      <section className={styles.blackbg} style={{borderTop: '1px solid #fff'}}>
+          <Box className={styles.iconsecinner}
+            sx={{
+              bgcolor: 'background.paper',
+              boxShadow: 1,
+              borderRadius: 2,
+              pt: 5,
+              pb: 5,
+              minWidth: 300,
+            }}
+          >
+              <Container>
+                  <HomeiconList />
+              </Container>
+          </Box>
+      </section>
+      <section className={styles.fullPageImage}>
+        <BannerMiddle />
+      </section>
     </div>
   );
 }
 
-export const getStaticProps = async () => {
+export async function getStaticProps(locale) {
+
+
   const client = createClient();
   const { products } = await client.products.list();
+
+  console.log(locale, 'local');
+  var subtitle = locale === 'en-US' ? 'Subtitle' : locale === 'fr' ? 'French Sunbtitle' : locale === 'nl-NL' ? "NL Subtitle" : "none";
+  // console.log(subtitle);
 
   return {
     props: {
       products,
+      subtitle
     },
   };
 };

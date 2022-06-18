@@ -15,7 +15,7 @@
   max-height: 100vh;
   -webkit-box-shadow: var(--shade);
   box-shadow: var(--shade);
-  background: white;
+  background: black;
   z-index: 11;
   display: flex;
   flex-direction: column;

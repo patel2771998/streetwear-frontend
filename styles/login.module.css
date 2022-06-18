@@ -1,0 +1,19 @@
+.input{
+    border: 1px solid white;
+}
+.logincontainer{
+    max-width: 90%;
+    width: 600px;
+    margin: 100px auto;
+    background-color: white;
+    padding: 20px 60px 50px;
+    box-shadow: 0 0 20px rgb(255 255 255 / 2%);
+    border-radius: 20px;
+    text-align: center;
+}
+.button{
+    background-color: #967844;
+}
+.button:hover{
+    background-color: black;
+}

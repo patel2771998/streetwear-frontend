@@ -6,6 +6,25 @@ import { formatPrice, resetOptions } from "../../utils/helper-functions";
 import styles from "../../styles/product.module.css";
 import { createClient } from "../../utils/client";
 import { formatPrices } from "../../utils/prices";
+import { Grid,Box } from "@material-ui/core";
+import ImageGallery from 'react-image-gallery';
+import "react-image-gallery/styles/css/image-gallery.css";
+const images = [];
+
+// const images = [
+//   {
+//     original: 'https://picsum.photos/id/1018/1000/600/',
+//     thumbnail: 'https://picsum.photos/id/1018/250/150/',
+//   },
+//   {
+//     original: 'https://picsum.photos/id/1015/1000/600/',
+//     thumbnail: 'https://picsum.photos/id/1015/250/150/',
+//   },
+//   {
+//     original: 'https://picsum.photos/id/1019/1000/600/',
+//     thumbnail: 'https://picsum.photos/id/1019/250/150/',
+//   },
+// ];
 
 const Product = ({ product }) => {
   const { addVariantToCart, cart } = useContext(StoreContext);
@@ -51,76 +70,107 @@ const Product = ({ product }) => {
     });
     if (product) setOptions(resetOptions(product));
   };
+  product.images.map((image) => {
+    images.push({
+      original: image.url,
+      thumbnail: image.url,
+    })
+  })
+  const getProductThumbnail = () => {
+    console.log(product, 'product');
+    // return product.images.map((image) => {
+    //   console.log(image, 'images');
+    //   return (
 
+    //     <Grid item xs={3}>
+    //         <div style={{display: 'block' }}>
+    //             <img src={image.url} alt="image"  />
+    //         </div>
+    //     </Grid>
+
+    //   );
+    // });
+  };
+
+  console.log(product.images);
+  var productThumbnail = product.images;
   return (
-    <div className={styles.container}>
-      <figure className={styles.image}>
-        <div className={styles.placeholder}>
-          <Image
-            objectFit="cover"
-            layout="fill"
-            loading="eager"
-            src={product.thumbnail}
-            alt={`${product.title}`}
-          />
+
+    <div className={styles.ProductMain}>
+      <div className={styles.wrap}>
+      <div className={styles.container}>
+        <div className={styles.productLeft}>
+          <Box style={{overflow: 'hidden'}}>
+            <ImageGallery items={images} />
+          </Box>
+          
+          
         </div>
-      </figure>
-      <div className={styles.info}>
-        <span />
-        <div className={styles.details}>
-          <div className="title">
-            <h1>{product.title}</h1>
-          </div>
-          <p className="price">{formatPrices(cart, product.variants[0])}</p>
-          <div className={styles.selection}>
-            <p>Select Size</p>
-            <div className="selectors">
-              {product.variants
-                .slice(0)
-                .reverse()
-                .map((v) => {
-                  return (
-                    <button
-                      key={v.id}
-                      className={`${styles.sizebtn} ${
-                        v.title === options.size ? styles.selected : null
-                      }`}
-                      onClick={() =>
-                        setOptions({
-                          variantId: v.id,
-                          quantity: options.quantity,
-                          size: v.title,
-                        })
-                      }
-                    >
-                      {v.title}
-                    </button>
-                  );
-                })}
+
+        <div className={styles.info}>
+          <span />
+          <div className={styles.details}>
+            <div className="title">
+              <h1>{product.title}</h1>
             </div>
-          </div>
-          <div className={styles.selection}>
-            <p>Select Quantity</p>
-            <div className={styles.qty}>
-              <button
-                className={styles.qtybtn}
-                onClick={() => handleQtyChange("dec")}
-              >
-                -
-              </button>
-              <span className={styles.ticker}>{options.quantity}</span>
-              <button
-                className={styles.qtybtn}
-                onClick={() => handleQtyChange("inc")}
-              >
-                +
-              </button>
+            <p className="price">{formatPrices(cart, product.variants[0])}</p>
+            <div className={styles.selection}>
+              <p>Select Size</p>
+              <div className="selectors">
+                {product.variants
+                  .slice(0)
+                  .reverse()
+                  .map((v) => {
+                    return (
+                      <button
+                        key={v.id}
+                        className={`${styles.sizebtn} ${v.title === options.size ? styles.selected : null
+                          }`}
+                        onClick={() =>
+                          setOptions({
+                            variantId: v.id,
+                            quantity: options.quantity,
+                            size: v.title,
+                          })
+                        }
+                      >
+                        {v.title}
+                      </button>
+                    );
+                  })}
+              </div>
             </div>
+            <div className={styles.selection}>
+              <p>Select Quantity</p>
+              <div className={styles.qty}>
+                <button
+                  className={styles.qtybtn}
+                  onClick={() => handleQtyChange("dec")}
+                >
+                  -
+                </button>
+                <span className={styles.ticker}>{options.quantity}</span>
+                <button
+                  className={styles.qtybtn}
+                  onClick={() => handleQtyChange("inc")}
+                >
+                  +
+                </button>
+                <button className={styles.addbtn} onClick={() => handleAddToBag()}>
+                  <span>Add to bag</span>
+                  <BiShoppingBag />
+                </button>
+              </div>
+            </div>
+
+
           </div>
-          <button className={styles.addbtn} onClick={() => handleAddToBag()}>
-            <span>Add to bag</span>
-            <BiShoppingBag />
-          </button>
+        </div>
+
+
+      </div>
+
+      <div className={styles.productBottom} >
           <div className={styles.tabs}>
             <div className="tab-titles">
               <button className={styles.tabtitle}>Product Description</button>
@@ -129,7 +179,13 @@ const Product = ({ product }) => {
               <p>{product.description}</p>
             </div>
           </div>
-        </div>
+      </div>
+
+     
+
+      
+
+
       </div>
     </div>
   );

@@ -10,6 +10,7 @@
 .container {
   margin-top: 20px;
   flex-grow: 1;
+  color: white;
 }
 
 .shippingOption {
@@ -20,6 +21,8 @@
   background: white;
   border-radius: 8px;
   padding: 1rem;
+  margin-bottom: 10px;
+  color: black;
 }
 
 .shippingOption div {

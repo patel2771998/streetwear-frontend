@@ -15,6 +15,7 @@ import { borderRadius } from '@material-ui/system';
 import styles from "../../styles/home.module.css";
 import { BiLock } from 'react-icons/bi';
 import { useRouter } from 'next/router';
+import ListGroup from 'react-bootstrap/';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -33,21 +34,33 @@ const imageContent = (props) => {
     
     return (
         <Grid container  justifyContent="center" alignItems="center">
+            {/* <Grid item xs={4}>
+                <div style={{display: 'block' }}>
+                    <img src="about/girl.jpeg" alt="image"  />
+                </div>
+            </Grid> */}
             <Grid item xs={6}>
                 <div style={{display: 'block' }}>
-                    <img src="home/cool_girlboy_over_t_1611080701_6ba995aa.jpg" alt="image"  />
+                    <img src="about/girl3.jpeg" alt="image"  />
                 </div>
             </Grid>
             <Grid item xs={6}>
                 <Box style={{ textAlign: 'left', width:"80%", margin: "0 auto" }}>
                     <Typography className={styles.h6} variant="h6" component="h6" gutterBottom>{props.subtitle}</Typography>
-                    <Typography className={styles.h1} variant="h1" component="div" gutterBottom>This is your own empire</Typography>
-                    <Typography variant="p" component="div" paragraph className={styles.p}>Sed ac odio aliquet, fringilla odio eget, tincidunt nunc. Duis aliquet pulvinar ante tempor tincidunt. Nullam pellentesque ipsum quis suscipit ullamcorper. Pellentesque enim sapien, rutrum nec lectus et, interdum imperdiet nunc.</Typography>
-                    <Typography variant="p" component="div" paragraph className={styles.p}>Sed ac odio aliquet, fringilla odio eget, tincidunt nunc. Duis aliquet pulvinar ante tempor tincidunt. Nullam pellentesque ipsum quis suscipit ullamcorper. Pellentesque enim sapien, rutrum nec lectus et, interdum imperdiet nunc.</Typography>
+                    <Typography className={styles.h1} variant="h1" component="div" gutterBottom>Why Choose us </Typography>
+                    {/* <ListGroup variant="flush" style={{'background': 'black'}}>
+                        <ListGroup.Item>Cras justo odio</ListGroup.Item>
+                        <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
+                        <ListGroup.Item>Morbi leo risus</ListGroup.Item>
+                        <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
+                        <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                    </ListGroup> */}
+                    <Typography variant="p" component="div" gutterBottom className={styles.p}>Sed ac odio aliquet, fringilla odio eget, tincidunt nunc. Duis aliquet pulvinar ante tempor tincidunt. Nullam pellentesque ipsum quis suscipit ullamcorper. Pellentesque enim sapien, rutrum nec lectus et, interdum imperdiet nunc.</Typography>
                     <Button href="#text-buttons" variant="outlined" color="primary" className={styles.button}>Shop Now</Button>
 
                 </Box>
             </Grid>
+            
             
         </Grid>
     );

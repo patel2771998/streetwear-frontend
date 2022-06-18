@@ -1,13 +1,14 @@
 .step {
   display: flex;
-  background: white;
+  background: black;
   border-radius: 8px;
   box-shadow: var(--shade);
-  padding: 2rem 2rem;
+  padding: 1rem 2rem;
   align-items: center;
   font-size: var(--fz-s);
   margin-bottom: 0.5em;
-  color: grey;
+  color: white;
+  border: 1px solid white;
 }
 
 .stepInfo {

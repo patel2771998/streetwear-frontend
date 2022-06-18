@@ -6,7 +6,7 @@
 .steps {
   width: 60%;
   height: 100vh;
-  padding: 110px 88px 28px;
+  padding: 20px 88px 28px;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
@@ -58,7 +58,7 @@
 }
 
 .breadcrumbs p.activeStep {
-  color: black;
+  color: white;
 }
 
 @media (max-width: 876px) {

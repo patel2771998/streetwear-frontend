@@ -1,0 +1,27 @@
+# Logs
+*.log
+
+# Node
+node_modules/
+
+# extra script files
+scripts/
+
+# package-lock file
+package-lock.json
+
+test.js
+
+config/database.js
+
+src/interfaces/html/
+
+nodemon.json
+
+config/environments/
+ 
+public/
+
+.next/
+.DS_Store
+.package-lock.json

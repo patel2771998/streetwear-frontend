@@ -36,14 +36,7 @@ const imageContent = (props) => {
                 <Box style={{ textAlign: 'left', width:"80%", margin: "0 auto" }}>
                     <Typography className={styles.h6} variant="h6" component="h6" gutterBottom>{subtitle}</Typography>
                     <Typography className={styles.h1} variant="h1" component="div" gutterBottom>{title}</Typography>
-                    <Typography variant="p" component="p" paragraph className={styles.p}>Sed ac odio aliquet, fringilla odio eget, tincidunt nunc. Duis aliquet pulvinar ante tempor tincidunt. Nullam pellentesque ipsum quis suscipit ullamcorper. Pellentesque enim sapien, rutrum nec lectus et, interdum imperdiet nunc.</Typography>
-                    <Typography variant="p" component="p" paragraph className={styles.p}>Sed ac odio aliquet, fringilla odio eget, tincidunt nunc. Duis aliquet pulvinar ante tempor tincidunt. Nullam pellentesque ipsum quis suscipit ullamcorper. Pellentesque enim sapien, rutrum nec lectus et, interdum imperdiet nunc.</Typography>
-                    <ul className={styles.p}  style={{listStyle: 'none', paddingLeft: '20px'}}>
-                        <li>Quality Assurance</li>
-                        <li>Satisfaction Guarantee</li>
-                        <li>Transparency</li>
-                        <li>Support and Maintenance</li>
-                    </ul>
+                    <Typography variant="p" component="div" gutterBottom className={styles.p}>Sed ac odio aliquet, fringilla odio eget, tincidunt nunc. Duis aliquet pulvinar ante tempor tincidunt. Nullam pellentesque ipsum quis suscipit ullamcorper. Pellentesque enim sapien, rutrum nec lectus et, interdum imperdiet nunc.</Typography>
                     <Button href="#text-buttons" variant="outlined" color="primary" className={styles.button}>Shop Now</Button>
                 </Box>
             </Grid>
