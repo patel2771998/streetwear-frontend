@@ -23,6 +23,10 @@ import { BiShoppingBag } from "react-icons/bi"
 import { quantity, sum, test } from "../../utils/helper-functions"
 import styles from "../../styles/nav-bar.module.css"
 import { useRouter } from "next/router";
+import { toast } from 'react-toastify';
+import { connect } from 'react-redux';
+import { Types } from '../../constants/actionTypes';
+import AccountMenu from './AccountMenu';
 
 
 const headersData = [
@@ -84,7 +88,7 @@ const useStyles = makeStyles(() => ({
   },
   headerRight: {
     display: 'flex',
-    flex: 2,
+    flex: 3,
     alignItems: 'center'
   },
   headerLeft: {
@@ -150,12 +154,14 @@ const getCollections = async (props) => {
 //     }
 //   }, [router.pathname]);
 
-export default function Header() {
+const Header = (props) => {
   const classes = useStyles();
   const { updateCartViewDisplay } = useContext(DisplayContext)
   const { cart } = useContext(StoreContext)
   const [isCheckout, setIsCheckout] = useState(true)
   const [isRender, setRender] = useState(false)
+  const [isLogoutOpen, setLogoutOpen] = useState(false);
+
 
   useEffect(() => {
     setRender(true)
@@ -169,6 +175,7 @@ export default function Header() {
           <Box className={classes.headerLeft}>{streetwearlogo}</Box>
           <Box className={classes.headerRight}>
             <Box className={classes.headerMain}>{getMenuButtons()}</Box>
+            
             <Box>{getRightIcon}</Box>
           </Box>
         </Box>
@@ -176,12 +183,18 @@ export default function Header() {
     );
   };
   const getRightIcon = (
-    <button className={classes.cartbbutton} onClick={() => updateCartViewDisplay()}>
-      <BiShoppingBag className={classes.icon} />{" "}
-      <span className={classes.cartitem}>
-        {cart.items.length > 0 ? cart.items.map(quantity).reduce(sum) : 0}
-      </span>
-    </button>
+    <>
+    <Box style={{display: "flex"}}>
+        <AccountMenu />
+        <button className={classes.cartbbutton} onClick={() => updateCartViewDisplay()}>
+          <BiShoppingBag className={classes.icon} />{" "}
+          <span className={classes.cartitem}>
+            {cart.items.length > 0 ? cart.items.map(quantity).reduce(sum) : 0}
+          </span>
+        </button>
+    </Box>
+    
+    </>
   )
 
 
@@ -200,14 +213,11 @@ export default function Header() {
 
     return headersData.map(({ label, href }) => {
       return (
-
-
         <div className={classes.menumain}>
           <Link href={href} className={classes.menuButton}  style={{color:'white'}}>
             <a className={router.pathname == href ? "active " + classes.menuButton : classes.menuButton} >
             {label}
             </a>
-              
           </Link>
         </div>
       );
@@ -222,3 +232,12 @@ export default function Header() {
   </>
   );
 }
+const mapStateToProps = (state) => ({
+  profile: state.user.profile
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  save_user_data: (data) =>
+    dispatch({ type: Types.LOGIN, payload: data }),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

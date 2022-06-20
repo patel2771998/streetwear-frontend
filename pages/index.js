@@ -14,8 +14,9 @@ import BannerMiddle from "../components/home/bannerMiddle";
 import SaleBanner from "../components/home/SaleBanner";
 import Quickview from "../components/product/quickview";
 import HomeiconList from "../components/home/HomeiconList";
-
-
+import { toast } from 'react-toastify';
+import { connect } from 'react-redux';
+import { Types } from '../constants/actionTypes';
 import Footer from "../components/layout/Footer.jsx";
 import productStyles from "../styles/product.module.css";
 import Image from "next/image"
@@ -30,7 +31,7 @@ import Container from 'react-bootstrap/Container';
 // import fr from "../lang/fr.json";
 // import nl_NL from "../lang/nl-NL.json";
 
-export default function Home({ products, subtitle }) {
+const Home = ({ products, subtitle }) => {
   const { cart } = useContext(StoreContext)
 
   function MouseOver(event) {
@@ -188,3 +189,12 @@ export async function getStaticProps(locale) {
     },
   };
 };
+const mapStateToProps = (state) => ({
+  profile: state.user.profile
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  save_user_data: (data) =>
+    dispatch({ type: Types.LOGIN, payload: data }),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

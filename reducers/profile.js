@@ -11,9 +11,10 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
+  console.log('loginType', action.type, Types.LOGIN, state, action.payload)
   switch (action.type) {
     case Types.LOGIN:
-    console.log('login', action.payload.user)
+      console.log('Im loging');
       return {
         ...state,
         profile: action.payload.user,

@@ -1,7 +1,5 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import {reducer as toastrReducer} from 'react-redux-toastr'
-
 
 import profile from '../reducers/profile';
 let persistedState= {}
@@ -11,8 +9,7 @@ if (typeof window !== 'undefined') {
     : {}
 }
 const rootReducer = combineReducers({
-  user: profile,
-  toastr: toastrReducer
+  user: profile
 });
 
 const configureStore = () => {

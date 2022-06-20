@@ -20,7 +20,6 @@ import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { Types } from '../constants/actionTypes';
 import styles from "../styles/login.module.css";
-import {toastr} from 'react-redux-toastr'
 
 const Register = (props) => {
   const router = useRouter();
@@ -82,48 +81,23 @@ const Register = (props) => {
     var data = await ApiServices.PostApiCall(ApiEndpoint.REGISTER_USER, JSON.stringify(body), headers);
     //props.loaderRef(false)
     console.log(data, 'data');
-    const toastrOptions = {
-      timeOut: 3000, // by setting to 0 it will prevent the auto close
-      icon: (<myCustomIconOrAvatar />), // You can add any component you want but note that the width and height are 70px ;)
-      onShowComplete: () => console.log('SHOW: animation is done'),
-      onHideComplete: () => console.log('HIDE: animation is done'),
-      onCloseButtonClick: () => console.log('Close button was clicked'),
-      onToastrClick: () => console.log('Toastr was clicked'),
-      showCloseButton: true, // false by default
-      closeOnToastrClick: true, // false by default, this will close the toastr when user clicks on it
-      
+    //props.loaderRef(true)
+   
+    if (!!data) {
+      if (data.customer) {
+        props.save_user_data({ user: data.customer });
+        router.push('/');
+        toast.success(data.message)
+      } else {
+        toast.error(data.message)
+      }
+    } else {
+      toast.error('Something went wrong.')
     }
-    if(!!data){
-        if(data.customer){
-            console.log('customer');
-            toast.success("Login Sucessfully!")
-            if(data.customer.id){
-
-            }
-        }else if(data.code){
-            toastr.success('Title', 'Message', toastrOptions)
-
-            toast.error(data.message)
-            console.log('customer not exist', data.message);
-        }
-    }else{
-
-    }
-    
-    console.log(data, 'Register')
-    // if (!!data) {
-    //   if (data.status) {
-    //     data.userData.token = data.token
-    //     props.save_user_data({ user: data.userData });
-    //     router.push('/');
-    //     toast.success(data.message)
-    //   } else {
-    //     toast.error(data.message)
-    //   }
-    // } else {
-    //   toast.error('Something went wrong.')
-    // }
   }
+    
+    
+  
 
   return (
     <>

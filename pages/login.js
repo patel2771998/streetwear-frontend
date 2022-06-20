@@ -12,6 +12,8 @@ import { useEffect } from 'react';
 import styles from "../styles/login.module.css";
 import ApiServices from '/config/ApiServices';
 import ApiEndpoint from '/config/ApiEndpoint';
+import { Types } from '../constants/actionTypes';
+import Constants from '../config/Constants';
 
 const Login = (props) => {
 //   useEffect(() => {
@@ -40,6 +42,7 @@ const Login = (props) => {
       onLoginPress()
     }
   });
+  console.log(props);
 
   const onLoginPress = async () => {
     //props.loaderRef(true)
@@ -52,36 +55,20 @@ const Login = (props) => {
     }
     var data = await ApiServices.PostApiCall(ApiEndpoint.LOGIN_USER, JSON.stringify(body), headers);
     //props.loaderRef(false)
-
     console.log(data, 'data');
-    if(!!data){
-        if(data.customer){
-            console.log('customer');
-            if(data.customer.id){
-
-            }
-        }else{
-            console.log('data');
-        }
-    }
-    let stack = 'jasoliyavaishali12@gmail.com:123456';
-  let buff = new Buffer(stack);
-  let base64data = buff.toString('base64');
-    console.log('base64data', base64data)
     if (!!data) {
-      if (data.status) {
-        data.userData.token = data.token;
-        data.userData.currentAccount = data.userData.account[0];
-        props.save_user_data({ user: data.userData });
-        router.push('/');
-        toast.success(data.message)
+      if (data.customer) {
+        console.log(data.customer, 'data.customer');
+        //props.save_user_data({ user: data.userData });
+        props.save_user_data({ user: data.customer });
+        console.log(props);
+        //router.push('/about');
       } else {
         toast.error(data.message)
       }
     } else {
       toast.error('Something went wrong.')
     }
-
   }
 
   
@@ -140,6 +127,8 @@ const Login = (props) => {
               value={formik.values.password}
               variant="outlined"
             />
+
+            <Typography>Forgot password</Typography>
             <Box sx={{ py: 2 }}>
               <Button
                 color="primary"
@@ -147,7 +136,7 @@ const Login = (props) => {
                 size="large"
                 type="submit"
                 variant="contained"
-                className={styles.button}
+                className="goldenbutton"
               >
                 Sign In Now
               </Button>
@@ -188,6 +177,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   save_user_data: (data) =>
-    dispatch({ type: Types.LOGIN, payload: data }, showToast('message', true)),
+    dispatch({ type: Types.LOGIN, payload: data }),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
