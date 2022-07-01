@@ -13,14 +13,16 @@ import { Formik } from "formik";
 import Link from "next/link";
 import React from "react";
 import * as yup from "yup";
+import CustomerDashboardLayout from "../../components/layout/CustomerDashboardLayout";
+
 
 const ProfileEditor = () => {
   const handleFormSubmit = async (values) => {
     console.log(values);
   };
 
-  return (
-    <div>
+  const EDITProfile = 
+  <>
       <DashboardPageHeader
         iconName="user_filled"
         title="Edit Profile"
@@ -124,7 +126,7 @@ const ProfileEditor = () => {
                       errorText={touched.contact && errors.contact}
                     />
                   </Grid>
-                  <Grid item md={6} xs={12}>
+                  {/* <Grid item md={6} xs={12}>
                     <TextField
                       name="birth_date"
                       label="Birth Date"
@@ -135,7 +137,7 @@ const ProfileEditor = () => {
                       value={values.birth_date || ""}
                       errorText={touched.birth_date && errors.birth_date}
                     />
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </Box>
 
@@ -146,6 +148,12 @@ const ProfileEditor = () => {
           )}
         </Formik>
       </Card1>
+  </>
+;
+
+  return (
+    <div>
+      <CustomerDashboardLayout content={EDITProfile} />
     </div>
   );
 };

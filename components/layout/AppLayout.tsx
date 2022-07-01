@@ -12,7 +12,7 @@ type Props = {
   navbar?: React.ReactChild;
 };
 
-const AppLayout: React.FC<Props> = ({
+const AppLayout () = ({
   children,
   navbar,
   title = "React Next.js Ecommerce Template",
@@ -36,7 +36,19 @@ const AppLayout: React.FC<Props> = ({
     ) : (
       children
     )}
-
+    <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        />
+    {/* Same as ß*/}
+    <ToastContainer />
     <MobileNavigationBar />
     <Footer />
   </StyledAppLayout>

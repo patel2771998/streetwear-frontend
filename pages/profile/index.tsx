@@ -11,21 +11,77 @@ import Typography, { H3, H5, Small } from "@component/Typography";
 import { format } from "date-fns";
 import Link from "next/link";
 import React from "react";
+import CustomerDashboardLayout from "../../components/layout/CustomerDashboardLayout";
+import { connect } from 'react-redux';
+import { Types } from '../../constants/actionTypes';
+import ApiServices from 'config/ApiServices';
+import ApiEndpoint from 'config/ApiEndpoint';
+import { toast } from 'react-toastify';
 
-const Profile = () => {
-  return (
-    <div>
+const Profile = (props) => {
+
+  const onLoginPress = async () => {
+    //props.loaderRef(true)
+    var headers = {
+      "Content-Type": "application/json",
+    }
+    var data = await ApiServices.GetApiCall(ApiEndpoint.RETRIVE_CUSTOMER, headers);
+    //props.loaderRef(false)
+    console.log(data, 'Profiledata');
+    if (!!data) {
+      if (data.customer) {
+        console.log(data.customer, 'data.customer');
+        //props.save_user_data({ user: data.userData });
+        props.save_user_data({ user: data.customer });
+        console.log(props);
+        //router.push('/about');
+      } else {
+        toast.error(data.message)
+      }
+    } else {
+      toast.error('Something went wrong.')
+    }
+  }
+  console.log(onLoginPress, 'Profiledata', '');
+
+
+  const firstName = props.profile.first_name;
+  const lastName = props.profile.last_name;
+  const email = props.profile.email;
+  const phone = props.profile.phone;
+  const infoList = [
+    {
+      //title: ((props.profile.orders).length)?props.profile.orders.length: 0,
+      title: 0,
+      subtitle: "All Orders",
+    },
+    {
+      title: "02",
+      subtitle: "Awaiting Payments",
+    },
+    {
+      title: "00",
+      subtitle: "Awaiting Shipment",
+    },
+    {
+      title: "01",
+      subtitle: "Awaiting Delivery",
+    },
+  ];
+
+  const content = 
+  <>
       <DashboardPageHeader
-        iconName="user_filled"
-        title="My Profile"
-        button={
-          <Link href="/profile/edit">
-            <Button color="primary" bg="primary.light" px="2rem">
-              Edit Profile
-            </Button>
-          </Link>
-        }
-      />
+          iconName="user_filled"
+          title="My Profile"
+          button={
+            <Link href="/profile/edit">
+              <Button color="primary" bg="primary.light" px="2rem">
+                Edit Profile
+              </Button>
+            </Link>
+          }
+        />
 
       <Box mb="30px">
         <Grid container spacing={6}>
@@ -39,24 +95,24 @@ const Profile = () => {
                   alignItems="center"
                 >
                   <div>
-                    <H5 my="0px">Ralph Edwards</H5>
+                    <H5 my="0px">{ firstName + " " + lastName}</H5>
                     <FlexBox alignItems="center">
-                      <Typography fontSize="14px" color="text.hint">
+                      {/* <Typography fontSize="14px" color="text.hint">
                         Balance:
                       </Typography>
                       <Typography ml="4px" fontSize="14px" color="primary.main">
                         $500
-                      </Typography>
+                      </Typography> */}
                     </FlexBox>
                   </div>
 
-                  <Typography
+                  {/* <Typography
                     ontSize="14px"
                     color="text.hint"
                     letterSpacing="0.2em"
                   >
                     SILVER USER
-                  </Typography>
+                  </Typography> */}
                 </FlexBox>
               </Box>
             </FlexBox>
@@ -86,64 +142,65 @@ const Profile = () => {
           </Grid>
         </Grid>
       </Box>
-
       <TableRow p="0.75rem 1.5rem">
         <FlexBox flexDirection="column" p="0.5rem">
           <Small color="text.muted" mb="4px" textAlign="left">
             First Name
           </Small>
-          <span>Ralph</span>
+          <span>{firstName}</span>
         </FlexBox>
         <FlexBox flexDirection="column" p="0.5rem">
           <Small color="text.muted" mb="4px" textAlign="left">
-            Last Name
+          Last Name
           </Small>
-          <span>Edwards</span>
+          <span>{lastName}</span>
         </FlexBox>
         <FlexBox flexDirection="column" p="0.5rem">
           <Small color="text.muted" mb="4px" textAlign="left">
             Email
           </Small>
-          <span>ralfedwards@email.com</span>
+          <span>{email}</span>
         </FlexBox>
         <FlexBox flexDirection="column" p="0.5rem">
           <Small color="text.muted" mb="4px" textAlign="left">
             Phone
           </Small>
-          <span>+1983649392983</span>
+          <span>{phone}</span>
         </FlexBox>
-        <FlexBox flexDirection="column" p="0.5rem">
-          <Small color="text.muted" mb="4px">
-            Birth date
-          </Small>
-          <span className="pre">
-            {format(new Date(1996 / 11 / 16), "dd MMM, yyyy")}
-          </span>
-        </FlexBox>
+          {/* <FlexBox flexDirection="column" p="0.5rem">
+            <Small color="text.muted" mb="4px">
+              Birth date
+            </Small>
+            <span className="pre">
+              {format(new Date(1996 / 11 / 16), "dd MMM, yyyy")}
+            </span>
+          </FlexBox> */}
       </TableRow>
+  </>
+;
+  return (
+
+    <div>
+      <CustomerDashboardLayout content={content} />
     </div>
   );
 };
 
-const infoList = [
-  {
-    title: "16",
-    subtitle: "All Orders",
-  },
-  {
-    title: "02",
-    subtitle: "Awaiting Payments",
-  },
-  {
-    title: "00",
-    subtitle: "Awaiting Shipment",
-  },
-  {
-    title: "01",
-    subtitle: "Awaiting Delivery",
-  },
-];
+
+
+
+const mapStateToProps = (state) => ({
+  profile: state.user.profile
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  save_user_data: (data) =>
+    dispatch({ type: Types.LOGIN, payload: data }),
+});
 
 Profile.layout = DashboardLayout;
 
-export default Profile;
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+
+
+

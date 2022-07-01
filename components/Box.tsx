@@ -37,7 +37,7 @@ const Box = styled.div<
     TypographyProps
 >(
   ({ shadow, cursor, transition, theme }) => ({
-    boxShadow: theme.shadows[shadow],
+    //boxShadow: theme.shadows[shadow],
     cursor,
     transition,
   }),
