@@ -20,7 +20,6 @@ nodemon.json
 
 config/environments/
  
-public/
 
 .next/
 .DS_Store
