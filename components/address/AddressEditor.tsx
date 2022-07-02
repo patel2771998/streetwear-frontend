@@ -9,11 +9,45 @@ import Link from "next/link";
 import React from "react";
 import * as yup from "yup";
 import DashboardLayout from "../layout/CustomerDashboardLayout";
+import ApiServices from '@config/ApiServices';
+import ApiEndpoint from '@config/ApiEndpoint';
+import { toast } from 'react-toastify';
+import { useState, useEffect } from "react";
+import { useRouter } from 'next/router';
 
-const AddressEditor = () => {
+const AddressEditor = (props) => {
+
+  const router = useRouter();
   const handleFormSubmit = async (values) => {
     console.log(values);
   };
+
+  useEffect(() => {
+    if (!!props.router && !!props.router.query.id ) {
+        const id = props.router.query.id;
+        viewAddress(id);
+    }
+  }, [router.isReady])
+
+  const viewAddress = async (id) => {
+      //var deletedIndex = addresses.indexOf(id);
+      var deletedIndex = -1;
+      if (deletedIndex !== -1) {
+        var headers = {
+            "Content-Type": "application/json",
+        }
+        props.loaderRef(true)
+        var patternDelete = await ApiServices.GetApiCall(ApiEndpoint.RETRIVE_CUSTOMER_ADDRESS + "/" + id, headers)
+        console.log(patternDelete,'patternDelete');
+        props.loaderRef(false)
+        if (!!patternDelete && patternDelete.status == true) {
+            //setRefreshData(refreshData + 1);
+            toast.success('Succesfully Deleted')
+        } else {
+            toast.error(patternDelete.message)
+        }
+      }
+  }
 
   return (
     <div>
@@ -46,10 +80,10 @@ const AddressEditor = () => {
             <form onSubmit={handleSubmit}>
               <Box mb="30px">
                 <Grid container horizontal_spacing={6} vertical_spacing={4}>
-                  <Grid item md={6} xs={12}>
+                <Grid item md={6} xs={12}>
                     <TextField
-                      name="name"
-                      label="Name"
+                      name="first_name"
+                      label="First Name"
                       fullwidth
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -59,8 +93,30 @@ const AddressEditor = () => {
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <TextField
-                      name="address"
-                      label="Address Line"
+                      name="last_name"
+                      label="Last Name"
+                      fullwidth
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.name || ""}
+                      errorText={touched.name && errors.name}
+                    />
+                  </Grid>
+                  <Grid item md={6} xs={12}>
+                    <TextField
+                      name="address_1"
+                      label="Address"
+                      fullwidth
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.name || ""}
+                      errorText={touched.name && errors.name}
+                    />
+                  </Grid>
+                  <Grid item md={6} xs={12}>
+                    <TextField
+                      name="address_2"
+                      label="Address 2"
                       fullwidth
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -70,8 +126,31 @@ const AddressEditor = () => {
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <TextField
-                      name="contact"
-                      label="Phone"
+                      name="city"
+                      label="City"
+                      fullwidth
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.contact || ""}
+                      errorText={touched.contact && errors.contact}
+                    />
+                  </Grid>
+                  <Grid item md={6} xs={12}>
+                    <TextField
+                      name="state"
+                      label="State"
+                      fullwidth
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.contact || ""}
+                      errorText={touched.contact && errors.contact}
+                    />
+                  </Grid>
+
+                  <Grid item md={6} xs={12}>
+                    <TextField
+                      name="company"
+                      label="Company"
                       fullwidth
                       onBlur={handleBlur}
                       onChange={handleChange}

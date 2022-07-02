@@ -60,12 +60,12 @@ const linkList = [
         iconName: "heart",
         count: 19,
       },
-      {
-        href: "/support-tickets",
-        title: "Support Tickets",
-        iconName: "customer-service",
-        count: 1,
-      },
+      // {
+      //   href: "/support-tickets",
+      //   title: "Support Tickets",
+      //   iconName: "customer-service",
+      //   count: 1,
+      // },
     ],
   },
   {
@@ -83,12 +83,12 @@ const linkList = [
         iconName: "pin",
         count: 16,
       },
-      {
-        href: "/payment-methods",
-        title: "Payment Methods",
-        iconName: "credit-card",
-        count: 4,
-      },
+      // {
+      //   href: "/payment-methods",
+      //   title: "Payment Methods",
+      //   iconName: "credit-card",
+      //   count: 4,
+      // },
     ],
   },
 ];

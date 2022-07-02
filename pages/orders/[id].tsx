@@ -26,7 +26,7 @@ const OrderDetails = () => {
   const width = useWindowSize();
   const breakpoint = 350;
 
-  return (
+  const orderListData = 
     <div>
       <DashboardPageHeader
         title="Order Details"
@@ -214,7 +214,13 @@ const OrderDetails = () => {
         </Grid>
       </Grid>
     </div>
-  );
+  
+    return (
+
+      <div>
+        <DashboardLayout content={orderListData} />
+      </div>
+    );
 };
 
 OrderDetails.layout = DashboardLayout;

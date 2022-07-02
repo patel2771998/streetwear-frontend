@@ -3,7 +3,13 @@ import CustomerOrderList from "@component/orders/CustomerOrderList";
 import React from "react";
 
 const Orders = () => {
-  return <CustomerOrderList />;
+  const orderList =  <CustomerOrderList />;
+  return (
+
+    <div>
+      <CustomerDashboardLayout content={orderList} />
+    </div>
+  );
 };
 
 Orders.layout = CustomerDashboardLayout;

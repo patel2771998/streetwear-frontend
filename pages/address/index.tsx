@@ -9,9 +9,71 @@ import TableRow from "@component/TableRow";
 import Typography from "@component/Typography";
 import Link from "next/link";
 import React from "react";
+import ApiServices from '@config/ApiServices';
+import ApiEndpoint from '@config/ApiEndpoint';
+import { toast } from 'react-toastify';
+import { useState, useEffect } from "react";
+import { useRouter } from 'next/router';
 
-const AddressList = () => {
-  return (
+
+const AddressList = (props) => {
+
+  const router = useRouter();
+  const [deleteId, setDeleteId] = useState('');
+  const [refreshData, setRefreshData] = useState(0);
+  const [addresses, setAddresses] = useState([]);
+
+  useEffect(() => {
+    if (!!props.router && !!props.router.id ) {
+        const id = props.router.id;
+        viewAddress(id);
+    }
+  }, [router.isReady])
+
+  
+  
+  const deleteAddress = async (id) => {
+      //console.log(id);
+      var deletedIndex = addresses.indexOf(id);
+      if (deletedIndex !== -1) {
+        var headers = {
+            "Content-Type": "application/json",
+        }
+        props.loaderRef(true)
+        var patternDelete = await ApiServices.DeleteApiCall(ApiEndpoint.RETRIVE_CUSTOMER_ADDRESS + "/" + id, headers)
+        console.log(patternDelete,'patternDelete');
+        props.loaderRef(false)
+        if (!!patternDelete && patternDelete.status == true) {
+            setRefreshData(refreshData + 1);
+            toast.success('Succesfully Deleted')
+        } else {
+            toast.error(patternDelete.message)
+        }
+      }
+
+  }
+
+  const viewAddress = async (id) => {
+      //console.log('Test ', "FFF");
+      //console.log(id);
+      var deletedIndex = addresses.indexOf(id);
+      if (deletedIndex !== -1) {
+        var headers = {
+            "Content-Type": "application/json",
+        }
+        props.loaderRef(true)
+        var patternDelete = await ApiServices.GetApiCall(ApiEndpoint.RETRIVE_CUSTOMER_ADDRESS + "/" + id, headers)
+        console.log(patternDelete,'patternDelete');
+        props.loaderRef(false)
+        if (!!patternDelete && patternDelete.status == true) {
+            setRefreshData(refreshData + 1);
+            toast.success('Succesfully Deleted')
+        } else {
+            toast.error(patternDelete.message)
+        }
+      }
+  }
+  const DataList = 
     <div>
       <DashboardPageHeader
         title="My Addresses"
@@ -45,7 +107,7 @@ const AddressList = () => {
                 </IconButton>
               </Typography>
             </Link>
-            <IconButton size="small" onClick={(e) => e.stopPropagation()}>
+            <IconButton size="small" onClick={() => deleteAddress('xkssThds6h37sd') }>
               <Icon variant="small" defaultcolor="currentColor">
                 delete
               </Icon>
@@ -62,6 +124,13 @@ const AddressList = () => {
           }}
         />
       </FlexBox>
+    </div>
+  
+
+  return (
+
+    <div>
+      <DashboardLayout content={DataList} />
     </div>
   );
 };

@@ -24,7 +24,8 @@
       "@context/*": ["contexts/*"],
       "@hook/*": ["hooks/*"],
       "@utils/*": ["utils/*"],
-      "@reducer/*": ["reducers/*"]
+      "@reducer/*": ["reducers/*"],
+      "@config/*": ["config/*"]
     }
   },
   "exclude": ["node_modules"],

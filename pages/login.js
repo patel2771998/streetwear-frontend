@@ -59,10 +59,16 @@ const Login = (props) => {
     if (!!data) {
       if (data.customer) {
         console.log(data.customer, 'data.customer');
-        //props.save_user_data({ user: data.userData });
+        const datastatic = {
+          name:"Vaisgali",
+          email: "test@gmail.com"
+        }
         props.save_user_data({ user: data.customer });
+        //props.save_user_data({ mytest: datastatic });
         console.log(props);
+        toast.success('Login successfully')
         //router.push('/about');
+
       } else {
         toast.error(data.message)
       }
