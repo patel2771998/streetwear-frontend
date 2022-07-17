@@ -10,6 +10,7 @@ const GetApiCall = async (
   const rawResponse = await fetch(url, {
     method: 'GET',
     headers: header,
+    credentials: "cross-site"
   })
     .then((r) => r.json())
     .catch((exc) => {

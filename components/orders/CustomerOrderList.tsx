@@ -6,10 +6,67 @@ import Pagination from "../pagination/Pagination";
 import TableRow from "../TableRow";
 import { H5 } from "../Typography";
 import OrderRow from "./OrderRow";
-
+import ApiServices from '@config/ApiServices';
+import ApiEndpoint from '@config/ApiEndpoint';
+import { connect } from 'react-redux';
+import { Types } from '../../constants/actionTypes';  
+import { toast } from 'react-toastify';
+import { useState, useEffect } from "react";
+import { useRouter } from 'next/router';
+import axios from "axios";
 export interface CustomerOrderListProps {}
 
-const CustomerOrderList: React.FC<CustomerOrderListProps> = () => {
+const CustomerOrderList: React.FC<CustomerOrderListProps> = (props) => {
+
+  const [customerData, setcustomerData] = useState([]);
+  const [orderData, setorderData] = useState([]);
+
+  const getCustomer = async () => {
+
+    console.log(props);
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const instance = axios.create({
+      withCredentials: true,
+    })
+    instance.get(ApiEndpoint.RETRIVE_CUSTOMER_ORDER)
+      .then(function (response) {
+        // handle success
+        if (!!response && !!response.data.orders) {
+          setorderData(response.data.orders)
+          //toast.error('Sucess')
+        } else {
+          toast.error(response.data)
+        }
+
+        console.log(response.data.customer, 'response');
+
+
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .then(function () {
+        // always executed
+      });
+      
+
+
+
+  }
+  useEffect(() => {
+    if (props) {
+      getCustomer();
+
+    }
+  }, [props]);
+  console.log(orderData, 'orderData');
+
   return (
     <div>
       <DashboardPageHeader title="My Orders" iconName="bag_filled" />
@@ -37,21 +94,23 @@ const CustomerOrderList: React.FC<CustomerOrderListProps> = () => {
         </TableRow>
       </Hidden>
 
-      {orderList.map((item, ind) => (
+      {orderData.map((item, ind) => (
         <OrderRow item={item} key={ind} />
       ))}
 
-      <FlexBox justifyContent="center" mt="2.5rem">
+      {/* <FlexBox justifyContent="center" mt="2.5rem">
         <Pagination
           pageCount={5}
           onChange={(data) => {
             console.log(data.selected);
           }}
         />
-      </FlexBox>
+      </FlexBox> */}
     </div>
   );
 };
+
+
 
 const orderList = [
   {

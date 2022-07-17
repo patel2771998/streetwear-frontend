@@ -12,6 +12,9 @@ import { theme } from '../../utils/theme';
 import { GlobalStyles } from '../../utils/globalStyles';
 import { AppProvider } from '../../contexts/app/AppContext';
 import { ToastContainer , toast} from "react-toastify";
+import Topbar from "@component/topbar/Topbar";
+import Sticky from "@component/sticky/Sticky";
+
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -19,7 +22,10 @@ import 'react-toastify/dist/ReactToastify.css';
 const Layout = ({ children }) => {
   const { cartView } = useContext(DisplayContext);
   const store = configureStore()
-  console.log(store, 'configure')
+  console.log(store, 'configure');
+  store.subscribe(() => {
+    localStorage.setItem('reduxState', JSON.stringify(store.getState()))
+  })
   // const App = ({ Component, pageProps }) => {
   //   let Layout = Component.layout || Fragment;
   
@@ -81,8 +87,14 @@ const Layout = ({ children }) => {
         <div className={cartView ? styles.noscroll : null}>
             <CartView />
             <Blur />
+            {/* <Topbar /> */}
+            {/* <Sticky fixedOn={0}> */}
             <NavBar />
+            {/* </Sticky> */}
+           
+            
             <main>{children}</main>
+
             <Footer />
             <ToastContainer />
       </div>

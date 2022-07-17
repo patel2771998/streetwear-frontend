@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { getTheme } from "../../utils/utils";
 
 const StyledTopbar = styled.div`
-  background: ${getTheme("colors.secondary.main")};
+  background: black;
   color: white;
   height: 40px;
   font-size: 12px;

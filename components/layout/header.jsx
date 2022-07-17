@@ -101,7 +101,8 @@ const useStyles = makeStyles(() => ({
   },
   appbar: {
     backgroundColor: "black",
-    boxShadow: '0px 0px 29px 11px rgb(43 34 34 / 91%)'
+    boxShadow: '0px 0px 29px 11px rgb(43 34 34 / 91%)',
+    //position: 'static',
   },
   icon:{
     color: 'white',

@@ -35,11 +35,13 @@ const OrderRow: React.FC<OrderRowProps> = ({ item }) => {
     }
   };
 
+  
+
   return (
-    <Link href={item.href}>
+    <Link href={"/orders/" + item.id}>
       <TableRow as="a" href={item.href} my="1rem" padding="6px 18px">
         <H5 m="6px" textAlign="left">
-          {item.orderNo}
+          {item.id}
         </H5>
         <Box m="6px">
           <Chip p="0.25rem 1rem" bg={`${getColor(item.status)}.light`}>
@@ -47,10 +49,10 @@ const OrderRow: React.FC<OrderRowProps> = ({ item }) => {
           </Chip>
         </Box>
         <Typography className="flex-grow pre" m="6px" textAlign="left">
-          {format(new Date(item.purchaseDate), "MMM dd, yyyy")}
+          {format(new Date(), "MMM dd, yyyy")}
         </Typography>
         <Typography m="6px" textAlign="left">
-          ${item.price.toFixed(2)}
+          {item.currency_code + " "}{item.total.toFixed(2)}
         </Typography>
 
         <Hidden flex="0 0 0 !important" down={769}>

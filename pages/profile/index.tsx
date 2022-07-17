@@ -32,8 +32,8 @@ const Profile = (props) => {
       if (data.customer) {
         console.log(data.customer, 'data.customer');
         //props.save_user_data({ user: data.userData });
-        props.save_user_data({ user: data.customer });
-        console.log(props);
+        //props.save_user_data({ user: data.customer });
+        //console.log(props);
         //router.push('/about');
       } else {
         toast.error(data.message)
@@ -51,22 +51,22 @@ const Profile = (props) => {
   const phone = props.profile.phone;
   const infoList = [
     {
-      //title: ((props.profile.orders).length)?props.profile.orders.length: 0,
-      title: 0,
+      title: ((props.profile.orders))?props.profile.orders.length: 0,
+      //title: 0,
       subtitle: "All Orders",
     },
-    {
-      title: "02",
-      subtitle: "Awaiting Payments",
-    },
-    {
-      title: "00",
-      subtitle: "Awaiting Shipment",
-    },
-    {
-      title: "01",
-      subtitle: "Awaiting Delivery",
-    },
+    // {
+    //   title: "02",
+    //   subtitle: "Awaiting Payments",
+    // },
+    // {
+    //   title: "00",
+    //   subtitle: "Awaiting Shipment",
+    // },
+    // {
+    //   title: "01",
+    //   subtitle: "Awaiting Delivery",
+    // },
   ];
 
   const content = 
@@ -121,7 +121,7 @@ const Profile = (props) => {
           <Grid item lg={6} md={6} sm={12} xs={12}>
             <Grid container spacing={4}>
               {infoList.map((item) => (
-                <Grid item lg={3} sm={6} xs={6} key={item.subtitle}>
+                <Grid item lg={4} sm={6} xs={6} key={item.subtitle}>
                   <FlexBox
                     as={Card}
                     flexDirection="column"

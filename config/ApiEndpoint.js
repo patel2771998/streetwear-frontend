@@ -7,5 +7,7 @@ export default {
     RETRIVE_CUSTOMER_ORDER: Constants.BASE_API_URL + 'customers/me/orders',
     RETRIVE_CUSTOMER_ADDRESS: Constants.BASE_API_URL + 'customers/me/addresses',
     RETRIVE_CUSTOMER_PAYMENT_METHODS: Constants.BASE_API_URL + '/customers/me/payment-methods',
-    ADD_ADDRESS_CUSTOMER: Constants.BASE_API_URL + '/customers/me/addresses'
+    ADD_ADDRESS_CUSTOMER: Constants.BASE_API_URL + 'customers/me/addresses',
+    UPDATE_ADDRESS_CUSTOMER: Constants.BASE_API_URL + 'customers/me/addresses',
+    RETRIVE_CUSTOMER_ORDER_BY: Constants.BASE_API_URL + 'orders',
 }

@@ -36,7 +36,7 @@ const Topbar: React.FC = () => {
       >
         <FlexBox className="topbar-left">
           <div className="logo">
-            <img src="/assets/images/logo.svg" alt="logo" />
+            <img src="/assets/images/logo.png" alt="logo" />
           </div>
           <FlexBox alignItems="center">
             <Icon size="14px">phone-call</Icon>
@@ -76,12 +76,13 @@ const Topbar: React.FC = () => {
                   borderRadius="2px"
                   mr="0.5rem"
                   alt={item.title}
+                  width="20px"
                 />
                 <Small fontWeight="600">{item.title}</Small>
               </MenuItem>
             ))}
           </Menu>
-          <Menu
+          {/* <Menu
             direction="right"
             handler={
               <FlexBox
@@ -106,7 +107,7 @@ const Topbar: React.FC = () => {
                 <Small fontWeight="600">{item.title}</Small>
               </MenuItem>
             ))}
-          </Menu>
+          </Menu> */}
         </FlexBox>
       </Container>
     </StyledTopbar>

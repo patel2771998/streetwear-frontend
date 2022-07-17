@@ -14,12 +14,11 @@ import ApiServices from '/config/ApiServices';
 import ApiEndpoint from '/config/ApiEndpoint';
 import { Types } from '../constants/actionTypes';
 import Constants from '../config/Constants';
-
+import axios from "axios";
 const Login = (props) => {
-//   useEffect(() => {
-//     console.log('props....', props)
-//     console.log('BASE_API_URL', Constants.BASE_API_URL );
-//   }, [])
+   useEffect(() => {
+     console.log('currentUserData....', props)
+   }, [props])
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -42,7 +41,6 @@ const Login = (props) => {
       onLoginPress()
     }
   });
-  console.log(props);
 
   const onLoginPress = async () => {
     //props.loaderRef(true)
@@ -53,28 +51,68 @@ const Login = (props) => {
     var headers = {
       "Content-Type": "application/json",
     }
-    var data = await ApiServices.PostApiCall(ApiEndpoint.LOGIN_USER, JSON.stringify(body), headers);
-    //props.loaderRef(false)
-    console.log(data, 'data');
-    if (!!data) {
-      if (data.customer) {
-        console.log(data.customer, 'data.customer');
-        const datastatic = {
-          name:"Vaisgali",
-          email: "test@gmail.com"
-        }
-        props.save_user_data({ user: data.customer });
-        //props.save_user_data({ mytest: datastatic });
-        console.log(props);
-        toast.success('Login successfully')
-        //router.push('/about');
 
-      } else {
-        toast.error(data.message)
-      }
-    } else {
-      toast.error('Something went wrong.')
-    }
+    const instance = axios.create({
+      withCredentials: true,
+    })
+    console.log(instance, 'instance', ApiEndpoint.RETRIVE_CUSTOMER_ORDER)
+    instance.post(ApiEndpoint.LOGIN_USER, body)
+      .then(function (data) {
+        console.log(data);
+        // handle success
+        if (data.data.customer) {
+            console.log(data.data.customer, 'data.customer');
+            props.save_user_data({ user: data.data.customer });
+            //console.log(props, "ddsd");
+            router.push('/profile');
+    
+          } else {
+            toast.error(data.message)
+          }
+
+        // if (!!response && !!response.data) {
+        //   props.save_user_data({ user: data.customer });
+        //       console.log(props, "ddsd");
+        //       router.push('/profile');
+        //   //setorderData(response.data.orders)
+        //   toast.success('Sucess')
+        // } else {
+        //   toast.error(response.data)
+        // }
+
+        //console.log(response.data.customer, 'response');
+
+
+      })
+      .catch(function (error) {
+        // handle error
+
+        console.log(error, 'error');
+      })
+      .then(function () {
+        // always executed
+      });
+
+    // var data = await ApiServices.PostApiCall(ApiEndpoint.LOGIN_USER, JSON.stringify(body), headers);
+    // //props.loaderRef(false)
+    // console.log(data, 'data');
+    // if (!!data) {
+    //   if (data.customer) {
+    //     console.log(data.customer, 'data.customer');
+    //     const datastatic = {
+    //       name:"Vaisgali",
+    //       email: "test@gmail.com"
+    //     }
+    //     props.save_user_data({ user: data.customer });
+    //     console.log(props, "ddsd");
+    //     router.push('/profile');
+
+    //   } else {
+    //     toast.error(data.message)
+    //   }
+    // } else {
+    //   toast.error('Something went wrong.')
+    // }
   }
 
   

@@ -14,10 +14,45 @@ import productDatabase from "@data/product-database";
 import useWindowSize from "@hook/useWindowSize";
 import { format } from "date-fns";
 import React, { Fragment } from "react";
+import ApiServices from '@config/ApiServices';
+import ApiEndpoint from '@config/ApiEndpoint';
+import { connect } from 'react-redux';
+import { Types } from '../../constants/actionTypes';  
+import { toast } from 'react-toastify';
+import { useState, useEffect } from "react";
+import { useRouter } from 'next/router';
+import axios from "axios";
 
 type OrderStatus = "packaging" | "shipping" | "delivering" | "complete";
 
-const OrderDetails = () => {
+const OrderDetails = (props) => {
+
+  const router = useRouter();
+  const [orderData, setOrderData]= useState({
+      id: "",
+      created_at: '2022-05-07',
+      items: [],
+      shipping_address: {},
+      subtotal: 0,
+      total: 0,
+      shipping_total: 0,
+      discount_total: 0
+
+  });
+
+
+  useEffect(() => {
+    console.log('viewAddress', router)
+    if (!!router && !!router.query.id) {
+      const id = router.query.id;
+      console.log('viewOrder')
+        viewOrder(id);
+      
+    }
+
+  }, [router.isReady])
+
+
   const orderStatus: OrderStatus = "shipping";
   const orderStatusList = ["packaging", "shipping", "delivering", "complete"];
   const stepIconList = ["package-box", "truck-1", "delivery"];
@@ -26,9 +61,83 @@ const OrderDetails = () => {
   const width = useWindowSize();
   const breakpoint = 350;
 
+
+  const viewOrder = async () => {
+    
+    const id = router.query.id;
+    const instance = axios.create({
+      withCredentials: true,
+    });
+    instance.get(ApiEndpoint.RETRIVE_CUSTOMER_ORDER_BY + "/" + id)
+      .then(function (response) {
+        console.log('handle success');
+        if (!!response && !!response.data.order) {
+          //toast.success('Succesfully get data');
+          setOrderData(response.data.order);
+          // var addressList = response.data.customer.shipping_addresses;
+          // console.log(addressList, 'addressList');
+          // addressList.map((address) => {
+          //     const id = router.query.id;
+          //     console.log(id, address.id, "idmatched")
+          //     if(address.id == id){
+          //         console.log('matched');
+          //         setgetAddress(address)
+          //     }
+          // })
+        } else {
+          toast.error(response.data)
+        }
+        //console.log(response.data.customer, 'response');
+        
+
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+  }
+
+  const formateAddress = (address) => {
+      var addresss = address.address_1?address.address_1:"";
+      addresss += address.address_2?address.address_2:"";
+      addresss += " ";
+      addresss += address.city?address.city:"";
+      addresss += " ";
+      addresss += address.state?address.state:"";
+      addresss += " ";
+      addresss += address.country_code?address.country_code.toUpperCase():"";
+      addresss += ", ";
+      addresss += address.postal_code?address.postal_code:"";
+      addresss += " ";
+      return addresss;
+      return address.address_1 + address.city+ address.state + address.country_code + address.postal_code;
+  }
+  const priceFormate = (price) => {
+    var currency_symbols = {
+      'USD': '$', // US Dollar
+      'EUR': '€', // Euro
+      'CRC': '₡', // Costa Rican Colón
+      'GBP': '£', // British Pound Sterling
+      'ILS': '₪', // Israeli New Sheqel
+      'INR': '₹', // Indian Rupee
+      'JPY': '¥', // Japanese Yen
+      'KRW': '₩', // South Korean Won
+      'NGN': '₦', // Nigerian Naira
+      'PHP': '₱', // Philippine Peso
+      'PLN': 'zł', // Polish Zloty
+      'PYG': '₲', // Paraguayan Guarani
+      'THB': '฿', // Thai Baht
+      'UAH': '₴', // Ukrainian Hryvnia
+      'VND': '₫', // Vietnamese Dong
+    };
+    
+  }
+  
+
+
   const orderListData = 
     <div>
-      <DashboardPageHeader
+      {/* <DashboardPageHeader
         title="Order Details"
         iconName="bag_filled"
         button={
@@ -36,9 +145,9 @@ const OrderDetails = () => {
             Order Again
           </Button>
         }
-      />
+      /> */}
 
-      <Card p="2rem 1.5rem" mb="30px">
+      {/* <Card p="2rem 1.5rem" mb="30px">
         <FlexBox
           flexDirection={width < breakpoint ? "column" : "row"}
           justifyContent="space-between"
@@ -80,7 +189,7 @@ const OrderDetails = () => {
           ))}
         </FlexBox>
 
-        <FlexBox justifyContent={width < breakpoint ? "center" : "flex-end"}>
+        {/* <FlexBox justifyContent={width < breakpoint ? "center" : "flex-end"}>
           <Typography
             p="0.5rem 1rem"
             borderRadius="300px"
@@ -90,8 +199,8 @@ const OrderDetails = () => {
           >
             Estimated Delivery Date <b>4th October</b>
           </Typography>
-        </FlexBox>
-      </Card>
+        </FlexBox> 
+      </Card> */}
 
       <Card p="0px" mb="30px" overflow="hidden">
         <TableRow bg="gray.200" p="12px" boxShadow="none" borderRadius={0}>
@@ -99,14 +208,14 @@ const OrderDetails = () => {
             <Typography fontSize="14px" color="text.muted" mr="4px">
               Order ID:
             </Typography>
-            <Typography fontSize="14px">9001997718074513</Typography>
+            <Typography fontSize="14px">{orderData.id}</Typography>
           </FlexBox>
           <FlexBox className="pre" m="6px" alignItems="center">
             <Typography fontSize="14px" color="text.muted" mr="4px">
               Placed on:
             </Typography>
             <Typography fontSize="14px">
-              {format(new Date(), "dd MMM, yyyy")}
+              {format(new Date(orderData.created_at), "dd MMM, yyyy")}
             </Typography>
           </FlexBox>
           <FlexBox className="pre" m="6px" alignItems="center">
@@ -120,7 +229,7 @@ const OrderDetails = () => {
         </TableRow>
 
         <Box py="0.5rem">
-          {productDatabase.slice(179, 182).map((item) => (
+          {orderData.items.map((item) => (
             <FlexBox
               px="1rem"
               py="0.5rem"
@@ -129,28 +238,30 @@ const OrderDetails = () => {
               key={item.id}
             >
               <FlexBox flex="2 2 260px" m="6px" alignItems="center">
-                <Avatar src={item.imgUrl} size={64} />
+                <Avatar src={item.thumbnail} size={64} />
                 <Box ml="20px">
                   <H6 my="0px">{item.title}</H6>
                   <Typography fontSize="14px" color="text.muted">
-                    ${item.price} x 1
+                    ${item.unit_price} x {item.quantity}
                   </Typography>
                 </Box>
               </FlexBox>
               <FlexBox flex="1 1 260px" m="6px" alignItems="center">
                 <Typography fontSize="14px" color="text.muted">
-                  Product properties: Black, L
+                  {item.description}
                 </Typography>
               </FlexBox>
-              <FlexBox flex="160px" m="6px" alignItems="center">
+              {/* <FlexBox flex="160px" m="6px" alignItems="center">
                 <Button variant="text" color="primary">
                   <Typography fontSize="14px">Write a Review</Typography>
                 </Button>
-              </FlexBox>
+              </FlexBox> */}
             </FlexBox>
           ))}
         </Box>
       </Card>
+
+
 
       <Grid container spacing={6}>
         <Grid item lg={6} md={6} xs={12}>
@@ -159,7 +270,7 @@ const OrderDetails = () => {
               Shipping Address
             </H5>
             <Paragraph fontSize="14px" my="0px">
-              Kelly Williams 777 Brockton Avenue, Abington MA 2351
+              {orderData.shipping_address? formateAddress(orderData.shipping_address):""}
             </Paragraph>
           </Card>
         </Grid>
@@ -176,7 +287,7 @@ const OrderDetails = () => {
               <Typography fontSize="14px" color="text.hint">
                 Subtotal:
               </Typography>
-              <H6 my="0px">$335</H6>
+              <H6 my="0px">${orderData.subtotal}</H6>
             </FlexBox>
             <FlexBox
               justifyContent="space-between"
@@ -186,7 +297,7 @@ const OrderDetails = () => {
               <Typography fontSize="14px" color="text.hint">
                 Shipping fee:
               </Typography>
-              <H6 my="0px">$10</H6>
+              <H6 my="0px">${orderData.shipping_total}</H6>
             </FlexBox>
             <FlexBox
               justifyContent="space-between"
@@ -196,7 +307,7 @@ const OrderDetails = () => {
               <Typography fontSize="14px" color="text.hint">
                 Discount:
               </Typography>
-              <H6 my="0px">-$30</H6>
+              <H6 my="0px">-${orderData.discount_total}</H6>
             </FlexBox>
 
             <Divider mb="0.5rem" />
@@ -207,9 +318,9 @@ const OrderDetails = () => {
               mb="1rem"
             >
               <H6 my="0px">Total</H6>
-              <H6 my="0px">$315</H6>
+              <H6 my="0px">${orderData.total}</H6>
             </FlexBox>
-            <Typography fontSize="14px">Paid by Credit/Debit Card</Typography>
+            {/* <Typography fontSize="14px">Paid by Credit/Debit Card</Typography> */}
           </Card>
         </Grid>
       </Grid>
@@ -225,4 +336,14 @@ const OrderDetails = () => {
 
 OrderDetails.layout = DashboardLayout;
 
-export default OrderDetails;
+const mapStateToProps = (state) => ({
+  profile: state.user.profile
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  save_user_data: (data) =>
+    dispatch({ type: Types.LOGIN, payload: data }),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(OrderDetails);
+
+//export default OrderDetails;

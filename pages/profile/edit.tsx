@@ -11,14 +11,29 @@ import DashboardPageHeader from "@component/layout/DashboardPageHeader";
 import TextField from "@component/text-field/TextField";
 import { Formik } from "formik";
 import Link from "next/link";
-import React from "react";
+import React, {useEffect} from "react";
 import * as yup from "yup";
 import CustomerDashboardLayout from "../../components/layout/CustomerDashboardLayout";
+import { connect } from 'react-redux';
+import { Types } from '../../constants/actionTypes';
 
-
-const ProfileEditor = () => {
+const ProfileEditor = (props) => {
   const handleFormSubmit = async (values) => {
-    console.log(values);
+    console.log('');
+  };
+
+  useEffect(() => {
+    if (props.profile.email) {
+        
+    }
+  }, [props]);
+
+  const initialValues = {
+    first_name: !!props.profile.first_name? props.profile.first_name: "",
+    last_name: !!props.profile.last_name? props.profile.last_name: "",
+    email: !!props.profile.email? props.profile.email: "",
+    contact: !!props.profile.phone? props.profile.phone: "",
+    birth_date: "",
   };
 
   const EDITProfile = 
@@ -36,7 +51,7 @@ const ProfileEditor = () => {
       />
 
       <Card1>
-        <FlexBox alignItems="flex-end" mb="22px">
+        {/* <FlexBox alignItems="flex-end" mb="22px">
           <Avatar src="/assets/images/faces/ralph.png" size={64} />
 
           <Box ml="-20px" zIndex={1}>
@@ -63,12 +78,16 @@ const ProfileEditor = () => {
               type="file"
             />
           </Hidden>
-        </FlexBox>
+        </FlexBox> */}
 
         <Formik
           initialValues={initialValues}
           validationSchema={checkoutSchema}
-          onSubmit={handleFormSubmit}
+          onSubmit={(userData) => {
+              console.log('usedata');
+              handleFormSubmit(userData)
+          }}
+          //onSubmit ={}
         >
           {({
             values,
@@ -78,7 +97,8 @@ const ProfileEditor = () => {
             handleBlur,
             handleSubmit,
           }) => (
-            <form onSubmit={handleSubmit}>
+            
+            <form onSubmit={handleSubmit} method="post">
               <Box mb="30px">
                 <Grid container horizontal_spacing={6} vertical_spacing={4}>
                   <Grid item md={6} xs={12}>
@@ -158,13 +178,7 @@ const ProfileEditor = () => {
   );
 };
 
-const initialValues = {
-  first_name: "",
-  last_name: "",
-  email: "",
-  contact: "",
-  birth_date: "",
-};
+
 
 const checkoutSchema = yup.object().shape({
   first_name: yup.string().required("required"),
@@ -176,4 +190,13 @@ const checkoutSchema = yup.object().shape({
 
 ProfileEditor.layout = DashboardLayout;
 
-export default ProfileEditor;
+const mapStateToProps = (state) => ({
+  profile: state.user.profile
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  save_user_data: (data) =>
+    dispatch({ type: Types.LOGIN, payload: data }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileEditor);
